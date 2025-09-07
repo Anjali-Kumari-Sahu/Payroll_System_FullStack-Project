@@ -7,8 +7,8 @@ An end-to-end starter you can run locally with Docker or without Docker.
 ```bash
 docker-compose up --build
 ```
-- Frontend: http://localhost:3000
-- Backend: http://localhost:8000/api/health/
+- Frontend
+- Backend
 - Postgres: localhost:5432
 
 ## Local Dev (without Docker)
