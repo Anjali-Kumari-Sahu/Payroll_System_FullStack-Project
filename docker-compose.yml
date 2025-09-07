@@ -1,0 +1,40 @@
+
+version: "3.9"
+services:
+  db:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-payroll_db}
+      POSTGRES_USER: ${POSTGRES_USER:-payroll_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-payroll_pass}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    command: bash -lc "python manage.py migrate && gunicorn payroll_backend.wsgi:application --bind 0.0.0.0:8000"
+    volumes:
+      - ./backend:/app
+    env_file:
+      - ./backend/.env.backend.example
+    environment:
+      POSTGRES_HOST: db
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build: ./frontend
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+
+volumes:
+  postgres_data:
