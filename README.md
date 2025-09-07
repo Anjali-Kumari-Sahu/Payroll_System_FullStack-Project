@@ -7,8 +7,23 @@ An end-to-end starter you can run locally with Docker or without Docker.
 ```bash
 docker-compose up --build
 ```
-- Frontend
-- Backend
+- Frontend: You can now view payroll-frontend in the browser.
+
+  Local:            http://localhost:3001        
+  On Your Network:  http://192.168.68.75:3001    
+
+  
+- Backend: Backend URLs you can try
+
+Admin panel → http://127.0.0.1:8000/admin/
+
+Employees API → http://127.0.0.1:8000/api/employees/
+
+JWT Token (login) →
+
+http://127.0.0.1:8000/api/token/
+
+http://127.0.0.1:8000/api/token/refresh/
 - Postgres: localhost:5432
 
 ## Local Dev (without Docker)
