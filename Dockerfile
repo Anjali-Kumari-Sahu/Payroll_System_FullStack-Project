@@ -1,14 +1,10 @@
 
-FROM node:18 as build
+FROM python:3.11-slim
+ENV PYTHONDONTWRITEBYTECODE=1         PYTHONUNBUFFERED=1
 WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
-
-FROM node:18
-WORKDIR /app
-RUN npm install -g serve
-COPY --from=build /app/build ./build
-EXPOSE 3000
-CMD ["serve", "-s", "build", "-l", "3000"]
+RUN apt-get update && apt-get install -y build-essential libpq-dev && rm -rf /var/lib/apt/lists/*
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . /app/
+EXPOSE 8000
+CMD ["gunicorn", "payroll_backend.wsgi:application", "--bind", "0.0.0.0:8000"]
